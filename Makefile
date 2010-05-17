@@ -3,7 +3,7 @@
 
 all: rdl
 
-rdl:
+rdl: *.hs
 	ghc --make -o rdl *.hs
 
 clean:

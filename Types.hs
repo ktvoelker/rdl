@@ -11,8 +11,6 @@ type Unit = Name
 
 data Qty = Qty Unit Mag deriving (Show)
 
-data DefUnit = DefUnit Unit Qty deriving (Show)
-
 data Need =
     NeedIngred Qty  Ingred
   | NeedCont   NMag Cont
@@ -27,20 +25,32 @@ data Tool = Tool Name deriving (Show)
 data Error = ENotEnough deriving (Show)
 
 data ArgType =
-    TArgText | TArgMag | TArgNMag | TArgQty | TArgIngred | TArgCont | TArgTool
+    TArgText
+  | TArgMag
+  | TArgNMag
+  | TArgQty
+  | TArgIngred Bool
+  | TArgCont
+  | TArgTool
   | TArgList ArgType
   deriving (Show)
 
-data DefArg = DefArg Bool ArgType deriving (Show)
+data DefArg = DefArg Name ArgType deriving (Show)
 
-data DefAction = DefAction [([Name], DefArg)] deriving (Show)
+data Def =
+    DefUnit Unit Qty
+  | DefAction [DefArg]
+  | DefIngred Name [Ingred]
+  | DefCont Name [Cont]
+  | DefTool Name [Tool]
+  deriving (Show)
 
 data Arg =
     ArgText   String
   | ArgMag    Mag
   | ArgNMag   NMag
   | ArgQty    Qty
-  | ArgIngred (Either Mag Qty) Ingred
+  | ArgIngred Bool (Either Mag Qty) Ingred
   | ArgCont   Cont
   | ArgTool   Tool
   | ArgList   [Arg]
@@ -48,5 +58,5 @@ data Arg =
 
 data Action = Action DefAction [Arg] deriving (Show)
 
-data Recipe = Recipe [DefUnit] [Need] [Action] deriving (Show)
+data Recipe = Recipe Name [Def] [Need] [Action] deriving (Show)
 

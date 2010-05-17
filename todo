@@ -1,0 +1,17 @@
+
+The general "action" system is not quite right. We really ought to separate
+that into two things:
+
+  * Combinations, a special kind of action which take exactly one container
+    argument, any number of ingredient or ingredient-set arguments, and any
+    number of tool arguments, but no other arguments.
+
+    When a combination is invoked, if all the ingredients which are in a
+    container are in the same container, then if the container is not
+    specified, it is assumed that the same container is being used.
+
+    Rather than List being a generic argument type, lists of ingredients will
+    just always be usable as ingredients.
+
+  * Special actions, which only take Text, Mag, or NMag arguments.
+
