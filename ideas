@@ -1,0 +1,40 @@
+
+Recipe Description Language
+===========================
+
+Features
+--------
+Recipe scaling (some quantities don't scale)
+Validity check (not using more of an ingredient than given)
+Ingredients exist in a multiple-inheritance heirarchy
+
+
+Concepts
+--------
+Units of measure
+Ingredients
+Containers
+Tools
+Actions
+
+When ingredients are combined in a container, a new ingredient is formed.
+It can be referenced via the container or be given a name.
+
+Actions may take arguments (in Objective C style)
+  Arguments are:
+    * Single items of type text, num, int, ingredient, container, tool
+    * A set of items of any of those types
+    * Maybe consumed by the action
+
+Whenever an ingredient may be mentioned, you may mention a subquantity of
+that ingredient.
+
+All ingredients must be declared up-front. In those declarations, alternative
+ingredients may be given. For the rest of the recipe, the alternatives are
+ignored, but at runtime, an alternative may be chosen, and the quantities will
+be scaled appropriately.
+
+May give assertions about how much of an ingredient is present.
+
+May define actions as combinations of other actions.
+
