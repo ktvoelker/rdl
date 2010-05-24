@@ -9,10 +9,10 @@ type Name = String
 
 type Unit = Name
 
-data Qty = Qty Unit Mag deriving (Show)
+data Qty = Qty Mag Unit deriving (Show)
 
 data Need =
-    NeedIngred Qty  Ingred
+    NeedIngred Name Qty Ingred
   | NeedCont   NMag Cont
   | NeedTool   NMag Tool deriving (Show)
 
@@ -24,39 +24,41 @@ data Tool = Tool Name deriving (Show)
 
 data Error = ENotEnough deriving (Show)
 
-data ArgType =
+data SpecialArgType =
     TArgText
   | TArgMag
   | TArgNMag
-  | TArgQty
-  | TArgIngred Bool
-  | TArgCont
-  | TArgTool
-  | TArgList ArgType
   deriving (Show)
 
-data DefArg = DefArg Name ArgType deriving (Show)
+data CombArgType =
+    TArgIngred Bool
+  | TArgCont
+  | TArgTool
+  deriving (Show)
+
+data DefArg a = DefArg Name a deriving (Show)
 
 data Def =
     DefUnit Unit Qty
-  | DefAction [DefArg]
+  | DefComb [DefArg CombArgType]
+  | DefSpecial [DefArg SpecialArgType]
   | DefIngred Name [Ingred]
   | DefCont Name [Cont]
   | DefTool Name [Tool]
   deriving (Show)
 
-data Arg =
+data SpecialArg =
     ArgText   String
   | ArgMag    Mag
   | ArgNMag   NMag
-  | ArgQty    Qty
-  | ArgIngred Bool (Either Mag Qty) Ingred
-  | ArgCont   Cont
-  | ArgTool   Tool
-  | ArgList   [Arg]
   deriving (Show)
 
-data Action = Action DefAction [Arg] deriving (Show)
+data IngredRef = IRef (Either Mag Qty) Name deriving (Show)
+
+data Action =
+    Comb Cont [Tool] [IngredRef]
+  | Special Int [SpecialArg]
+  deriving (Show)
 
 data Recipe = Recipe Name [Def] [Need] [Action] deriving (Show)
 
